@@ -3,8 +3,10 @@ Display Portfolio from mocking data
 
 # Requirement
 - OpenJDK 1.8
+  https://www.openlogic.com/openjdk-downloads
 
 - H2 Database 1.4.200
+  https://h2database.com/h2-2019-10-14.zip
 
 # To build
 Clone the repository
@@ -33,7 +35,13 @@ e.g.
 
 `java -cp app.jar:/home/codespace/h2/bin/h2-1.4.200.jar org.example.App`
 
-Java 8 and H2 are required
+Run in window:
+
+`java -cp ".;app.jar;<Path of H2 jar>" org.example.App`
+
+e.g.
+
+`java -cp ".;app.jar;lib\h2-1.4.200.jar" org.example.App`
 
 # Result
 
