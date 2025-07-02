@@ -1,0 +1,30 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+app/bin/
+
+# Generated files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar
+*.tar.gz
+*.log
+*.bak
+
+# IDE specific files (example for IntelliJ IDEA and Eclipse)
+.idea/
+.vscode/
+.project
+.classpath
+.settings/
+*.iml
+*.iws
+*.ipr
+
+# Operating System files
+.DS_Store
+Thumbs.db
