@@ -1,0 +1,12 @@
+Ticker, Type, Strike, Maturity, Asset
+AAPL,Stock,,,
+AAPLCall20250831,Call,195.6,2025-08-31,AAPL
+AAPLPut20250831,Put,205.5,2025-08-31,AAPL
+MSFT,Stock,,,
+GOOG,Stock,,,
+AMZN,Stock,,,
+META,Stock,,,
+TSLA,Stock,,,
+TSM,Stock,,,
+NVDA,Stock,,,
+AMD,Stock,,,
