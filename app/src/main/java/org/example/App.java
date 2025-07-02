@@ -13,15 +13,17 @@ public class App {
     private static final int sleepTime = 1000;
 
     public static void main(String[] args) {
-        Portfolio p = new Portfolio();
+        
         CSVLoader c = new CSVLoader();
         H2Loader h = new H2Loader();
         MockProvider m = new MockProvider();
+        m.start();
         SimpleOptionFormula f = new SimpleOptionFormula();
-        p.setPorfolioLoader(c);
-        p.setPorfolioLoader(h);
-        p.setDataProvider(m);
-        p.setOptionFormula(f);
+
+        Portfolio p = new Portfolio().setPorfolioLoader(c)
+                                    .setPorfolioLoader(h)
+                                    .setDataProvider(m)
+                                    .setOptionFormula(f);
         p.load();
 
         try {

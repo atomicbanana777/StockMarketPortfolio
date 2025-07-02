@@ -26,16 +26,19 @@ public class Portfolio implements Runnable{
         new Thread(this).start();
     }
 
-    public void setPorfolioLoader(PorfolioLoader loader){
+    public Portfolio setPorfolioLoader(PorfolioLoader loader){
         loaders.add(loader);
+        return this;
     }
 
-    public void setDataProvider(DataProvider dp){
+    public Portfolio setDataProvider(DataProvider dp){
         this.dp = dp;
+        return this;
     }
 
-    public void setOptionFormula(OptionFormula of){
+    public Portfolio setOptionFormula(OptionFormula of){
         this.of = of;
+        return this;
     }
 
     public void updateStockPrice(Product p){

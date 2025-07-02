@@ -36,6 +36,9 @@ dependencies {
     runtimeOnly 'com.h2database:h2:1.4.200'
 }
 
+test {
+    useJUnit() // Ensures Gradle uses JUnit to run tests
+}
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {

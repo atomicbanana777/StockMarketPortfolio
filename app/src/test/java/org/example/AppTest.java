@@ -3,6 +3,37 @@
  */
 package org.example;
 
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
+import org.example.csvLoader.CSVLoader;
+import org.example.h2Loader.H2Loader;
+import org.example.mockProvider.MockProvider;
+import org.example.portfolio.Portfolio;
+import org.example.simpleOptionFormula.SimpleOptionFormula;
+
 public class AppTest {
+
+    @Test
+    public void testLoadPortfolio(){
+        CSVLoader c = new CSVLoader();
+        c.setResourceURL(getClass().getClassLoader().getResource(c.getCSVFile()));
+        H2Loader h = new H2Loader();
+        h.setResourceURL(getClass().getClassLoader().getResource(h.getCSVFile()));
+        MockProvider m = new MockProvider();
+        m.setResourceURL(getClass().getClassLoader().getResource(m.getCSVFile()));
+        m.start();
+        SimpleOptionFormula f = new SimpleOptionFormula();
+
+        Portfolio p = new Portfolio().setPorfolioLoader(c)
+                                    .setPorfolioLoader(h)
+                                    .setDataProvider(m)
+                                    .setOptionFormula(f);
+        p.load();
+
+        assertEquals(4, p.getProducts().keySet().size());
+        assertEquals("Stock", p.getProducts().get("AAPL").getType());
+        assertEquals("Put", p.getProducts().get("AAPLPut20250831").getType());
+    }
     
 }

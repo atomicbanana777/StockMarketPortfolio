@@ -2,23 +2,26 @@ package org.example.mockProvider;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Random;
 
 import org.example.portfolio.DataProvider;
 
 public class MockProvider implements DataProvider, Runnable{
-    HashMap<String, Stock> stocks = new HashMap<>();
+    private HashMap<String, Stock> stocks = new HashMap<>();
+    private String csvFile = "mock.csv";
+    private URL resourceURL;
+
     private final int sleepTime = 1000;
 
-    public MockProvider(){
+    public void start(){
         load();
         new Thread(this).start();
     }
@@ -28,18 +31,30 @@ public class MockProvider implements DataProvider, Runnable{
         return stocks.get(ticker).getCurr_price();
     }
 
+    public void setCSVFile(String filePath){
+        csvFile = filePath;
+    }
+
+    public String getCSVFile(){
+        return csvFile;
+    }
+
+    public void setResourceURL(URL resourceURL){
+        this.resourceURL = resourceURL;
+    }
+
     public void load(){
-        File file = new File("mock.csv");
-        InputStream is = getClass().getClassLoader().getResourceAsStream("mock.csv");
-        if(file.exists() || is != null){
-            if(file.exists()){
-                try {
-                    is = new FileInputStream(file);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+        File file = new File(csvFile);
+        if(file.exists()){
+            try {
+                setResourceURL(file.toURI().toURL());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
-            try(BufferedReader br = new BufferedReader(new InputStreamReader(is));){
+        }
+        if(resourceURL != null){
+            try(InputStream is = resourceURL.openStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));){
                     boolean firstLine = true;
                     String line = br.readLine();
                     while (line != null) {
@@ -55,7 +70,7 @@ public class MockProvider implements DataProvider, Runnable{
                 e.printStackTrace();
             }
         } else {
-            System.out.println("mock.csv not exist");
+            System.out.println(csvFile + " file not exist");
         }
     }
 

@@ -2,11 +2,11 @@ package org.example.csvLoader;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 
 import org.example.portfolio.PorfolioLoader;
@@ -14,20 +14,35 @@ import org.example.portfolio.Product;
 
 public class CSVLoader implements PorfolioLoader{
 
+    private String csvFile = "portfolio.csv";
+    private URL resourceURL = null;
+
+    public void setCSVFile(String filePath){
+        csvFile = filePath;
+    }
+
+    public String getCSVFile(){
+        return csvFile;
+    }
+
+    public void setResourceURL(URL resourceURL){
+        this.resourceURL = resourceURL;
+    }
+
     @Override
     public void load(HashMap<String, Product> products){
-        File f = new File("portfolio.csv");
-        InputStream is = getClass().getClassLoader().getResourceAsStream("portfolio.csv");
-        if(f.exists() || is != null){
-            if(f.exists()){
-                try {
-                    is = new FileInputStream(f);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+        File f = new File(csvFile);
+        if(f.exists()){
+            try {
+                setResourceURL(f.toURI().toURL());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
-
-            try (BufferedReader bf = new BufferedReader(new InputStreamReader(is));) {
+        }
+        
+        if(resourceURL != null){
+            try (InputStream is = resourceURL.openStream();
+                BufferedReader bf = new BufferedReader(new InputStreamReader(is));) {
                 String line = bf.readLine();
                 boolean firstLine = true;
 
@@ -43,7 +58,7 @@ public class CSVLoader implements PorfolioLoader{
                 e.printStackTrace();
             }
         } else {
-            System.out.println("CSV file not exist");
+            System.out.println(csvFile + " file not exist");
         }
     }
 
