@@ -27,7 +27,13 @@ Run below command to build
 
 # To Run
 
-Run below command
+Copy `portfolio.csv`, `db.csv` and  `mock.csv` from `StockMarketPortfolio/app/src/test/resources`
+
+Paste it at the same directory as `app.jar`
+
+The program will load those files when executing
+
+Run in Linux:
 
 `java -cp app.jar:<h2 database jar> org.example.App`
 
@@ -63,12 +69,6 @@ Ctrl + C to exit
 ```
 
 # To customize profolio
-
-Copy `portfolio.csv`, `db.csv` and  `mock.csv` from `StockMarketPortfolio/app/src/main/resources`
-
-Paste it at the same directory as `app.jar` and modify them
-
-The program will load those files when executing
 
 # mock.csv
 
