@@ -9,17 +9,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import org.example.portfolio.PorfolioLoader;
+import org.example.portfolio.interfaceClass.PortfolioLoader;
 import org.example.portfolio.Product;
 
-public class CSVLoader implements PorfolioLoader{
+public class CSVLoader implements PortfolioLoader{
 
-    private String csvFile = "portfolio.csv";
+    private static final String csvFile = "portfolio.csv";
     private URL resourceURL = null;
-
-    public void setCSVFile(String filePath){
-        csvFile = filePath;
-    }
 
     public String getCSVFile(){
         return csvFile;
@@ -62,7 +58,7 @@ public class CSVLoader implements PorfolioLoader{
         }
     }
 
-    public Product setProductFromCSVRow(String line){
+    public static Product setProductFromCSVRow(String line){
         Product p = new Product();
         String[] str_array = line.split(",");
         for(int i = 0 ; i < str_array.length ; i++){

@@ -1,5 +1,6 @@
 package org.example.portfolio;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -7,11 +8,11 @@ public class Product {
     private String ticker;
     private Integer shares;
     private String type;
-    private Double strike;
+    private BigDecimal strike;
     private Date maturity;
-    private Double price;
+    private BigDecimal price;
     private String asset;
-    private Double value;
+    private BigDecimal value;
 
     public String getTicker() {
         return ticker;
@@ -31,10 +32,10 @@ public class Product {
     public void setType(String type) {
         this.type = type;
     }
-    public Double getStrike() {
+    public BigDecimal getStrike() {
         return strike;
     }
-    public void setStrike(Double strike) {
+    public void setStrike(BigDecimal strike) {
         this.strike = strike;
     }
     public Date getMaturity() {
@@ -43,10 +44,10 @@ public class Product {
     public void setMaturity(Date maturity) {
         this.maturity = maturity;
     }
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
     public String getAsset() {
@@ -55,10 +56,10 @@ public class Product {
     public void setAsset(String asset) {
         this.asset = asset;
     }
-    public Double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 

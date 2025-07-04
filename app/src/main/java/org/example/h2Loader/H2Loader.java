@@ -14,20 +14,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import org.example.portfolio.PorfolioLoader;
+import org.example.portfolio.interfaceClass.PortfolioLoader;
 import org.example.portfolio.Product;
 
-public class H2Loader implements PorfolioLoader{
+public class H2Loader implements PortfolioLoader{
     private static final String JDBC_URL = "jdbc:h2:mem:demodb;INIT=RUNSCRIPT FROM 'classpath:schema.sql'";
     private static final String USER = "sa";
     private static final String PASSWORD = "";
-    private String csvFile = "db.csv";
-    private URL resourceURL;
-    Connection connection;
-
-    public void setCSVFile(String filePath){
-        csvFile = filePath;
-    }
+    private static final String csvFile = "db.csv";
+    private URL resourceURL = null;
+    private Connection connection;
 
     public String getCSVFile(){
         return csvFile;
@@ -94,7 +90,7 @@ public class H2Loader implements PorfolioLoader{
                 ResultSet resultSet = ps.executeQuery();
                 while (resultSet.next()) {
                     p.setType(resultSet.getString("type"));
-                    p.setStrike(resultSet.getDouble("strike"));
+                    p.setStrike(resultSet.getBigDecimal("strike"));
                     p.setMaturity(resultSet.getDate("maturity"));
                     p.setAsset(resultSet.getString("asset"));
                 }

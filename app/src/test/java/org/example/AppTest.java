@@ -6,34 +6,63 @@ package org.example;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.example.csvLoader.CSVLoader;
-import org.example.h2Loader.H2Loader;
-import org.example.mockProvider.MockProvider;
+import org.example.portfolio.interfaceClass.OptionFormula;
 import org.example.portfolio.Portfolio;
+import org.example.portfolio.Product;
 import org.example.simpleOptionFormula.SimpleOptionFormula;
 
 public class AppTest {
 
     @Test
-    public void testLoadPortfolio(){
-        CSVLoader c = new CSVLoader();
-        c.setResourceURL(getClass().getClassLoader().getResource(c.getCSVFile()));
-        H2Loader h = new H2Loader();
-        h.setResourceURL(getClass().getClassLoader().getResource(h.getCSVFile()));
-        MockProvider m = new MockProvider();
-        m.setResourceURL(getClass().getClassLoader().getResource(m.getCSVFile()));
-        m.start();
-        SimpleOptionFormula f = new SimpleOptionFormula();
+    public void testSetProductFromCSVRow(){
+       String row = "AAPLCall20250831, 3000";
+       Product p = CSVLoader.setProductFromCSVRow(row);
+       assertEquals("AAPLCall20250831", p.getTicker());
+       assertEquals((Integer)3000, p.getShares());
 
-        Portfolio p = new Portfolio().setPorfolioLoader(c)
-                                    .setPorfolioLoader(h)
-                                    .setDataProvider(m)
-                                    .setOptionFormula(f);
+       row = "         AAPLPut20250831         ,        3000        ";
+       p = CSVLoader.setProductFromCSVRow(row);
+       assertEquals("AAPLPut20250831", p.getTicker());
+       assertEquals((Integer)3000, p.getShares());
+    }
+
+    @Test
+    public void testLoadPortfolio(){
+        Portfolio p = new Portfolio("CSVLoader_R", "H2Loader_R", "MockProvider_R","SimpleOptionFormula");
         p.load();
 
         assertEquals(4, p.getProducts().keySet().size());
         assertEquals("Stock", p.getProducts().get("AAPL").getType());
         assertEquals("Put", p.getProducts().get("AAPLPut20250831").getType());
+
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date d;
+            d = dateFormat.parse("2025-08-31");
+            assertEquals(d, p.getProducts().get("AAPLCall20250831").getMaturity());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
+
+    @Test
+    public void testSimpleOptionFormula(){
+        OptionFormula f = new SimpleOptionFormula();
+        assertEquals(new BigDecimal(5.86).setScale(2, RoundingMode.HALF_UP), f.calCallOptionPrice(new BigDecimal(205.86), new BigDecimal(200.00)));
+        assertEquals(new BigDecimal(0.00).setScale(2, RoundingMode.HALF_UP), f.calCallOptionPrice(new BigDecimal(205.86), new BigDecimal(210.00)));
+
+        assertEquals(new BigDecimal(0.00).setScale(2, RoundingMode.HALF_UP), f.calPutOptionPrice(new BigDecimal(205.86), new BigDecimal(200.00)));
+        assertEquals(new BigDecimal(4.14).setScale(2, RoundingMode.HALF_UP), f.calPutOptionPrice(new BigDecimal(205.86), new BigDecimal(210.00)));
+    }
+
+
     
 }

@@ -3,27 +3,14 @@
  */
 package org.example;
 
-import org.example.csvLoader.CSVLoader;
-import org.example.h2Loader.H2Loader;
-import org.example.mockProvider.MockProvider;
 import org.example.portfolio.Portfolio;
-import org.example.simpleOptionFormula.SimpleOptionFormula;
 
 public class App {
     private static final int sleepTime = 1000;
 
     public static void main(String[] args) {
         
-        CSVLoader c = new CSVLoader();
-        H2Loader h = new H2Loader();
-        MockProvider m = new MockProvider();
-        m.start();
-        SimpleOptionFormula f = new SimpleOptionFormula();
-
-        Portfolio p = new Portfolio().setPorfolioLoader(c)
-                                    .setPorfolioLoader(h)
-                                    .setDataProvider(m)
-                                    .setOptionFormula(f);
+        Portfolio p = new Portfolio();
         p.load();
 
         try {
@@ -45,5 +32,7 @@ public class App {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        
     }
 }

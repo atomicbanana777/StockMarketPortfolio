@@ -12,11 +12,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Random;
 
-import org.example.portfolio.DataProvider;
+import org.example.portfolio.interfaceClass.DataProvider;
 
 public class MockProvider implements DataProvider, Runnable{
     private HashMap<String, Stock> stocks = new HashMap<>();
-    private String csvFile = "mock.csv";
+    private static final String csvFile = "mock.csv";
     private URL resourceURL;
 
     private final int sleepTime = 1000;
@@ -27,12 +27,8 @@ public class MockProvider implements DataProvider, Runnable{
     }
 
     @Override
-    public Double getStockPrice(String ticker) {
+    public BigDecimal getStockPrice(String ticker) {
         return stocks.get(ticker).getCurr_price();
-    }
-
-    public void setCSVFile(String filePath){
-        csvFile = filePath;
     }
 
     public String getCSVFile(){
@@ -60,7 +56,7 @@ public class MockProvider implements DataProvider, Runnable{
                     while (line != null) {
                         if(!firstLine){ //skip 1st line
                             String[] str = line.split(",");
-                            Stock s = new Stock(str[0].trim(), Double.parseDouble(str[1].trim()));
+                            Stock s = new Stock(str[0].trim(), new BigDecimal(str[1].trim()));
                             stocks.put(s.getTicker(), s);
                         }
                         firstLine = false;
@@ -83,12 +79,11 @@ public class MockProvider implements DataProvider, Runnable{
 
                 Random random = new Random();
                 Boolean add = random.nextBoolean();
-                Double addition = random.nextDouble();
-                Double new_price = add ? s.getCurr_price() + addition : s.getCurr_price() - addition;
-                BigDecimal bd = new BigDecimal(new_price).setScale(2, RoundingMode.HALF_UP);
-                double roundedValue = bd.doubleValue();
+                BigDecimal addition = BigDecimal.valueOf(random.nextDouble());
+                BigDecimal new_price = add ? s.getCurr_price().add(addition) : s.getCurr_price().subtract(addition);
+                BigDecimal roundValue = new_price.setScale(2, RoundingMode.HALF_UP);
 
-                s.setCurr_price(roundedValue);
+                s.setCurr_price(roundValue);
             }
 
             try {
