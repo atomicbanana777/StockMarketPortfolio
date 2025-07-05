@@ -1,6 +1,7 @@
 package org.example.portfolio.factory;
 
 import org.example.mockProvider.MockProvider;
+import org.example.portfolio.interfaceClass.DataProvider;
 
 public class DataProviderFactory {
     public DataProvider getDataProvider(String name){
